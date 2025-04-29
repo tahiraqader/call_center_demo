@@ -1,0 +1,12 @@
+<!-- <h2>Upload Call</h2>
+<input type="file" (change)="onFileSelected($event)">
+<button (click)="onUpload()">Upload</button> -->
+<div class="upload-container">
+    <input type="file" (change)="onFileSelected($event)" [disabled]="isUploading" />
+    <button (click)="uploadFile()" [disabled]="!selectedFile || isUploading">
+      {{ isUploading ? 'Uploading...' : 'Upload' }}
+    </button>
+  
+    <div class="spinner" *ngIf="isUploading"></div>
+  </div>
+  
