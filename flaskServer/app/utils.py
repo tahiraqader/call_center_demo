@@ -266,7 +266,7 @@ def summarize_conversation(dialog_list, max_chunk_chars=4000):
     return final_summary
 
 #action items part
-action_verbs = [ "verify", "schedule", "send", "update", "confirm", "resolve", "remind"]
+action_verbs = [ "will","verify", "schedule", "send", "update", "confirm", "resolve", "remind"]
 
 # Function to identify action items in the transcript
 def extract_action_items_from_transcript(transcript_text):

@@ -1,8 +1,0 @@
-flask
-flask-cors
-pymongo
-transformers
-torch
-sentencepiece
-faster-whisper
-spacy
