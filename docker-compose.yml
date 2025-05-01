@@ -1,0 +1,30 @@
+version: '3.8'  # You can remove this line if Docker warns about `version`
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  flask-server:
+    build:
+      context: ./flask-server
+    container_name: flask-server-container
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/call_DB
+    depends_on:
+      - mongo
+
+  call-center-ui:
+    build:
+      context: ./call-center-ui
+    container_name: call-center-ui-container
+    ports:
+      - "80:80"
+    volumes:
+      - ./env/local-env.js:/usr/share/nginx/html/assets/env.js:ro
+    depends_on:
+      - flask-server

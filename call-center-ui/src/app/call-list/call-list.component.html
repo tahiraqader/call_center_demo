@@ -1,1 +1,24 @@
-<p>call-list works!</p>
+<table class="call-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Summary</th>
+      <th>Action Items</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let call of calls">
+      <td>{{ call.date | date:'short' }}</td>
+      <td (click)="editCall(call, 'summary')">
+        <span [title]="call.summary">{{ call.summary | slice:0:100 }}{{ call.summary.length > 100 ? '...' : '' }}</span>
+      </td>
+      <!-- <td (click)="editCall(call, 'action_items')"> -->
+      <td>
+        <li *ngFor="let item of call.action_items">{{ item }}</li>
+      </td>
+      <td>
+      <button (click)="deleteCall(call._id)">Delete</button></td>
+    </tr>
+  </tbody>
+</table>

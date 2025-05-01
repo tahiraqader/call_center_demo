@@ -1,12 +1,25 @@
-<!-- <h2>Upload Call</h2>
-<input type="file" (change)="onFileSelected($event)">
-<button (click)="onUpload()">Upload</button> -->
-<div class="upload-container">
-    <input type="file" (change)="onFileSelected($event)" [disabled]="isUploading" />
-    <button (click)="uploadFile()" [disabled]="!selectedFile || isUploading">
-      {{ isUploading ? 'Uploading...' : 'Upload' }}
-    </button>
+
+  <div class="upload-container">
+    <input type="file" (change)="onFileSelected($event)" [disabled]="isUploading" accept="audio/wav" />
+    
+    <div *ngIf="selectedFile && !previewVisible && !hasUploaded">
+      <button (click)="previewAudio()">Preview</button>
+    </div>
+    
+    <div *ngIf="previewVisible && audioPreviewUrl">
+      <audio [src]="audioPreviewUrl" controls></audio>
+    </div>
+  
+    <div *ngIf="selectedFile && !hasUploaded">
+      <button (click)="uploadFile()" [disabled]="isUploading" class="">
+        {{ isUploading ? 'Uploading...' : 'Upload' }}
+      </button>
+    </div>
+    <div *ngIf="uploadStatus" class="status">
+      {{ uploadStatus }}
+    </div>
   
     <div class="spinner" *ngIf="isUploading"></div>
   </div>
+  
   
