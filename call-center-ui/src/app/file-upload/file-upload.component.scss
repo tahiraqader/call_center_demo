@@ -1,33 +1,41 @@
+.upload-container {
+  display: flex;
+  flex-direction: row; //column;
+  gap: 1rem;
+  align-items: flex-start;
+  // width: 100vw;
+  // height: 10vh;
+}
 
-  .upload-container {
-    display: flex;
-    flex-direction: row;//column;
-    gap: 1rem;
-    align-items: flex-start;
-    // width: 100vw;
-    // height: 10vh;
+
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #ccc;
+  border-top-color: #007bff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  
-  
-  
-  .spinner {
-    width: 24px;
-    height: 24px;
-    border: 3px solid #ccc;
-    border-top-color: #007bff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  .status {
-    // margin-top: 10px;
-    font-weight: bold;
-    color: blue;
-  }
-  
-  
+}
+
+.status {
+  // margin-top: 10px;
+  font-weight: bold;
+  color: blue;
+}
+
+.btn {
+  width: 0.5rem;
+  height: 0.5rem
+}
+
+.heading {
+  margin: 2px;
+  text-align: center;
+}

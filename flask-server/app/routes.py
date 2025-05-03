@@ -1,62 +1,16 @@
-# from flask import Blueprint, request, jsonify
-# from werkzeug.utils import secure_filename
-# import os
-# from .utils import  process_call, summarize_conversation
-# from scipy.io import wavfile
-# import io
-# from . import mongo
-# UPLOAD_FOLDER = 'uploads/'
-# ALLOWED_EXTENSIONS = {'wav', 'mp3', 'ogg', 'flac'}  # Add any other formats you support
-
-
-# # All the REST API endpint should be here
-
-# create_call = Blueprint('create_call', __name__)
-# # Define the 'create' route on the blueprint
-# @create_call.route('/create', methods=['POST'])
-# def create_call_route():
-   
-#     file = request.files.get('file')
-#     filename= 'xxx'
-#     file_content=''
-#     if file:
-#     # Now 'file' is a FileStorage object from Werkzeug
-#     # You can read or save it
-#         # or
-#         filename = file.filename     # get the uploaded filename
-#         # Read the file into memory
-#         wav_bytes = file.read()
-        
-#         # Use scipy to read sample rate and audio data
-#         sample_rate, audio_data = wavfile.read(io.BytesIO(wav_bytes))
-        
-#         res = process_call(audio_data, sample_rate)
-#         # Insert into MongoDB
-#         inserted = mongo.db.calls.insert_one(res)
-       
-#         return jsonify(res)
-
-#     else:
-#         # Handle case where no file was uploaded
-#         print("No file part found")
-    
-#     return jsonify(filename)
-
 from flask import Blueprint, request, jsonify
 from werkzeug.utils import secure_filename
 import os
 import io
 from bson import ObjectId
 from bson.json_util import dumps
-from .utils import process_call, summarize_conversation
+from .utils import process_call,  extract_action_items_from_transcript
 from scipy.io import wavfile
 from . import mongo
 from datetime import date
 from datetime import datetime
+from .types import Call
 
-
-# UPLOAD_FOLDER = 'uploads/'
-# ALLOWED_EXTENSIONS = {'wav', 'mp3', 'ogg', 'flac'}
 
 create_call = Blueprint('create_call', __name__)
 
@@ -72,7 +26,7 @@ def create_call_route():
         res['date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         inserted = mongo.db.calls.insert_one(res)
         res['_id'] = str(inserted.inserted_id)
-        
+        print(" ======== data writen to db ", res)
         return jsonify(res), 201 
     return jsonify({'error': 'No file provided'}), 400
 
@@ -87,7 +41,14 @@ def get_calls():
 @create_call.route('/update/<string:call_id>', methods=['PUT'])
 def update_call(call_id):
     update_data = request.json
+    #normally used for summary in current implementation
+    # update the action items as well.
+    summary = update_data['summary']
+    if (summary):
+        action_items = extract_action_items_from_transcript(summary)
+        update_data['action_items'] = action_items
     result = mongo.db.calls.update_one({'_id': ObjectId(call_id)}, {'$set': update_data})
+    print("============result", result)
     if result.matched_count:
         return jsonify({'msg': 'Call updated successfully'}), 200
     return jsonify({'error': 'Call not found'}), 404

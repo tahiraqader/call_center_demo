@@ -1,35 +1,138 @@
 .call-table {
-    width: 100%;
-    border-collapse: collapse;
-  
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      vertical-align: top;
-    }
-  
-    th {
-      background-color: #f2f2f2;
-      text-align: left;
-    }
-  
-    td {
-      cursor: pointer;
-      max-width: 300px;
-      word-wrap: break-word;
-    }
-  
-    button {
-      background-color: #e74c3c;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  
-    button:hover {
-      background-color: #c0392b;
-    }
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid #999898;
+
+  th,
+  td {
+    padding: 8px;
+    vertical-align: top;
   }
-  
+
+  th {
+    border: 1px solid #999898;
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+
+  td {
+
+    max-width: 300px;
+    word-wrap: break-word;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+    /* Light gray for even rows */
+  }
+
+  tr:nth-child(odd) {
+    background-color: #ffffff;
+    /* White for odd rows (optional) */
+  }
+
+  .icon {
+    text-align: right;
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .edit {
+    background-image: url('/assets/images/edit.png');
+    /* Replace with actual path */
+    float: right;
+
+  }
+
+  .delete {
+    background-image: url('/assets/images/delete.png');
+    /* Replace with actual path */
+
+  }
+
+  .document {
+    background-image: url('/assets/images/document.png');
+    /* Replace with actual path */
+
+  }
+
+  .editable {
+    cursor: pointer;
+  }
+
+  button {
+    //background-color: white;;
+    color: white;
+    padding: 6px 10px;
+    cursor: pointer;
+    margin: 10px;
+    border: none;
+  }
+
+  // button:hover {
+  //   background-color: #0b9922;
+  // }
+
+  .btn {
+    width: 0.5rem;
+    height: 0.5rem
+  }
+
+}
+
+.modal {
+  position: fixed;
+  top: 25vh;
+  left: 25vw;
+  width: 50vw;
+  height: 50vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: whitesmoke;
+  width: 50vw;
+  height: 50vh;
+  border: 1px solid black;
+}
+
+.full-size-textarea {
+  width: 100%;
+  height: calc(100% - 80px);
+  resize: none;
+  /* optional: prevents manual resizing */
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 10px;
+  margin: 1px;
+}
+
+h3 {
+  text-align: center;
+  height: 20px;
+  margin: 5px;
+
+}
+
+.actions {
+  height: 40px;
+  padding: 5px;
+
+  button {
+    margin-right: 10px
+  }
+}
+
+.dashboard {
+  padding: 10px;
+
+  h3 {
+    text-align: center;
+    padding: 10px;
+  }
+
+}

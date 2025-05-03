@@ -1,11 +1,8 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 from .config import Config
-#from .routes import create_call # TQ this was working before might need to uncomment
 from .utils import transcribe_stereo_file_dialog
 from flask_cors import CORS
-
-
 
 # Create mongo instance but don't bind it yet
 mongo = PyMongo()

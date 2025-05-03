@@ -1,15 +1,23 @@
-
+<div>
+  <h3 class="heading"> Call Center</h3>
   <div class="upload-container">
     <input type="file" (change)="onFileSelected($event)" [disabled]="isUploading" accept="audio/wav" />
-    
-    <div *ngIf="selectedFile && !previewVisible && !hasUploaded">
+
+    <!-- <div *ngIf="selectedFile && !previewVisible && !hasUploaded">
       <button (click)="previewAudio()">Preview</button>
-    </div>
-    
-    <div *ngIf="previewVisible && audioPreviewUrl">
+    </div> -->
+
+    <!-- <div *ngIf="myAudioPreviewUrl">
+      <p>{{ myAudioPreviewUrl }}</p>
+      <audio [src]="myAudioPreviewUrl" controls autoplay></audio>
+      <p>{{ myAudioPreviewUrl }}</p>
+
+    </div> -->
+
+    <!-- <div *ngIf="previewVisible && audioPreviewUrl">
       <audio [src]="audioPreviewUrl" controls></audio>
-    </div>
-  
+    </div> -->
+
     <div *ngIf="selectedFile && !hasUploaded">
       <button (click)="uploadFile()" [disabled]="isUploading" class="">
         {{ isUploading ? 'Uploading...' : 'Upload' }}
@@ -18,8 +26,7 @@
     <div *ngIf="uploadStatus" class="status">
       {{ uploadStatus }}
     </div>
-  
+
     <div class="spinner" *ngIf="isUploading"></div>
   </div>
-  
-  
+</div>
