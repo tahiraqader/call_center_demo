@@ -1,7 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest-service.service';
-import { CallStateService } from '../services/call-state.service';
 import { CallRecord } from '../data/callRecord';
 
 @Component({
@@ -18,13 +17,7 @@ export class CallListComponent implements OnInit {
   currentPage = 1;
   pageSize = 10;
 
-  constructor(private callService: RestService, private callState: CallStateService) { }
-
-  // ngOnInit(): void {
-  //   this.fetchCalls();
-  //   this.callState.callsUpdated$.subscribe(() => this.fetchCalls());
-
-  // }
+  constructor(private callService: RestService) { }
 
   ngOnInit() {
     this.fetchCalls();
@@ -33,6 +26,7 @@ export class CallListComponent implements OnInit {
 
     });
   }
+
   // to get the calls first time
   fetchCalls() {
     this.callService.getCalls().subscribe(data => {
@@ -60,15 +54,9 @@ export class CallListComponent implements OnInit {
     this.editingField = null;
   }
 
-  // deleteCall(id: string) {
-  //   if (confirm('Are you sure you want to delete this call?')) {
-  //     this.callService.deleteCall(id).subscribe(() => this.fetchCalls());
-  //   }
-  // }
   deleteCall(id: string) {
     if (confirm('Are you sure you want to delete this call?')) {
       this.callService.deleteCall(id).subscribe(() => {
-        console.log("========deleteCall.subscribe")
         const index = this.calls.findIndex(item => item._id === id);
         if (index !== -1) {
           this.calls.splice(index, 1);
@@ -115,6 +103,4 @@ export class CallListComponent implements OnInit {
       this.currentPage--;
     }
   }
-
-
 }
