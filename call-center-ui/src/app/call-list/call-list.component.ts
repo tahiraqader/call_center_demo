@@ -2,6 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest-service.service';
 import { CallRecord } from '../data/callRecord';
+import { ChangeDetectorRef } from '@angular/core';
+import { NgZone } from '@angular/core';
+
 
 @Component({
   selector: 'app-call-list',
@@ -16,14 +19,20 @@ export class CallListComponent implements OnInit {
   showTranscription = false;
   currentPage = 1;
   pageSize = 10;
+  totalPages: number = 1;
 
-  constructor(private callService: RestService) { }
+  pagedCalls: CallRecord[] = []; // items to show on current page
+
+
+  constructor(private callService: RestService, private cdr: ChangeDetectorRef,  private zone: NgZone) { }
 
   ngOnInit() {
     this.fetchCalls();
     this.callService.dataAdded$.subscribe((data) => {
-      this.calls.push(data)
-
+      this.calls.unshift(data);
+      this.currentPage = 1;
+      this.updatePagedCalls();  // Force to show latest call 
+      this.cdr.detectChanges(); // adding to beginning might not trigger change detection.
     });
   }
 
@@ -31,6 +40,7 @@ export class CallListComponent implements OnInit {
   fetchCalls() {
     this.callService.getCalls().subscribe(data => {
       this.calls = data;
+      this.updatePagedCalls(); // show the first page only
     });
   }
 
@@ -45,7 +55,15 @@ export class CallListComponent implements OnInit {
     if (this.editingField) {
       this.callService
         .updateSummary(this.editingCallId, { [this.editingField]: this.editValue })
-        .subscribe(() => { });
+        .subscribe((data) => { 
+          console.log("=======date",data)
+          const index = this.calls.findIndex(item => item._id === this.editingCallId);
+          if (index != -1) {
+            this.calls[index].summary = data.summary;
+            this.calls[index].action_items = data.action_items;
+            console.log(this.calls[index])
+          }
+        });
     }
     this.editingField = null;
   }
@@ -87,20 +105,25 @@ export class CallListComponent implements OnInit {
     return Math.ceil(this.calls.length / this.pageSize);
   }
 
-  get pagedCalls() {
+  updatePagedCalls() {
+    this.totalPages = Math.ceil(this.calls.length / this.pageSize);
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.calls.slice(start, start + this.pageSize);
+    const end = start + this.pageSize;
+    this.pagedCalls = this.calls.slice(start, end);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagedCalls();
+    }
   }
 
   nextPage() {
-    if (this.currentPage < this.getTotalPages()) {
-      this.currentPage++;
-    }
+    this.goToPage(this.currentPage + 1);
   }
 
   prevPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
+    this.goToPage(this.currentPage - 1);
   }
 }

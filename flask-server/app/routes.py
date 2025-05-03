@@ -48,9 +48,8 @@ def update_call(call_id):
         action_items = extract_action_items_from_transcript(summary)
         update_data['action_items'] = action_items
     result = mongo.db.calls.update_one({'_id': ObjectId(call_id)}, {'$set': update_data})
-    print("============result", result)
     if result.matched_count:
-        return jsonify({'msg': 'Call updated successfully'}), 200
+        return jsonify( update_data), 200
     return jsonify({'error': 'Call not found'}), 404
 
 @create_call.route('/delete/<string:call_id>', methods=['DELETE'])

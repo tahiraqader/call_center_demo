@@ -72,9 +72,7 @@ def process_chunk(chunk, sample_rate):
     # Transcribe channels independently
     caller_segs = transcribe_channel(caller_audio, sample_rate)
     agent_segs = transcribe_channel(agent_audio, sample_rate)
-    # caller_conv.append(caller_segs)
-    # agent_conv.append(agent_segs)
-
+    
     merged_dialog = []
     i, j = 0, 0
 
@@ -180,7 +178,7 @@ def summarize_conversation(dialog_list, max_chunk_chars=4000):
     return final_summary
 
 #action items part -> I expect this words indicates an action should take place
-action_verbs = [ "resubmit","verify", "schedule", "send", "update", "confirm", "resolve", "remind"]
+action_verbs = ["contact", "reverse", "resubmit","verify", "schedule", "send", "update", "confirm", "resolve", "remind", "change"]
 
 # Function to identify action items in the transcript
 def extract_action_items_from_transcript(transcript_text):

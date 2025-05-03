@@ -22,7 +22,7 @@ export class RestService {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.apiUrl}/create`, formData).pipe(
-      tap((data)=>this.dataAdded.next()) // Notify listeners other then the caller
+      tap((data)=>this.dataAdded.next(data)) // Notify listeners other then the caller
     );
   }
 

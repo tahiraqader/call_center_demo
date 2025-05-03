@@ -11,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let call of calls">
+      <tr *ngFor="let call of pagedCalls">
         <td>{{ call.date | date:'short' }}</td>
         <td (click)="editField(call, 'summary')" class="editable">
           <span [title]="call.summary">{{ call.summary }}</span>
@@ -29,7 +29,6 @@
 
             </button>
             <button type="button" (click)="showTranscript(call,'transcription')" class="document icon">
-              <!-- <img src="./images/play.png"> -->
             </button>
           </span>
         </td>
