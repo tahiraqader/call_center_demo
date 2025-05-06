@@ -11,21 +11,19 @@ import numpy as np
 import time
 from .types import Call
 
-# --- Setup model ONCE ---
+# Use GPU is possible
 device = "cuda" if torch.cuda.is_available() else "cpu"
+print("Using device:", device)
+# --- Setup model ONCE ---
 model_size = "small"   # Use "tiny" for even faster speeds
 model = WhisperModel(model_size, device=device, compute_type="int8" if device == "cpu" else "float16") # used to transcribe
-sentiment_model_name = "j-hartmann/emotion-english-distilroberta-base"
-#sentiment_model = pipeline("sentiment-analysis", model="cardiffnlp/twitter-roberta-base-sentiment")
 
+sentiment_model_name = "j-hartmann/emotion-english-distilroberta-base"
 tokenizer = AutoTokenizer.from_pretrained(sentiment_model_name)
 sentiment_model = AutoModelForSequenceClassification.from_pretrained(sentiment_model_name)
 
 # # Load spaCy's small English model
 nlp = spacy.load("en_core_web_sm")
-
-# # Define a Hugging Face summarization pipeline (optional step for summarizing the call transcript)
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 caller_conv = []
 agent_conv=[]
@@ -33,7 +31,7 @@ agent_conv=[]
 
 def split_stereo_audio(audio, sample_rate, max_duration_s=60, overlap_s=1):
     """
-    Split stereo audio into chunks keeping channels synchronized.
+    Split stereo audio into chunks keeping channels synchronized
     """
     samples_per_chunk = int(sample_rate * max_duration_s)
     samples_overlap = int(sample_rate * overlap_s)
@@ -131,7 +129,7 @@ def process_call(audio, sample_rate):
     print(f"Execution time: {end - start:.2f} seconds")
 
     return (data) 
-   
+
 #create the summerization
 summarizer = pipeline(
     "summarization",
