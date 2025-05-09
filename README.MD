@@ -73,3 +73,9 @@ This is an Angular UI to upload stereo calls to the associated flask server and 
 ### Usage:
 1. Copy the `sample-data`  contents to the system where you are running the angular app. The UI has a button the top left to select a file. Select the file and press 'upload'.
 2. Other than the files in the sample data, you can use other stereo files as well.
+
+![Call Center Dashboard](screenshots/table.png)
+
+![Edit Summary](screenshots/summary.png)
+
+![Call Transcript](screenshots/transcript.png)
