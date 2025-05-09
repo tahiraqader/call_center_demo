@@ -39,6 +39,8 @@ If copying to aws EC2, you will need `scp -i <your pem key> ubuntu@ipaddress`
         - export MONGO_URI="mongodb://localhost:27017/call_DB" (call_DB will be the mongodb database name)
     - start the flask server
 1. You can check the status of db as: `sudo systemctl status mongod`
+1. mongod service should startup automatically. If is is not running when you restart the system, start it using: `sudo systemctl start mongod`
+1. setup.sh will launch the flask server. After restarting the system, you can: `cd call_center_demo/flask-server` and run it as `flask run` 
 
 ## FRONT END - Call-center-ui
 
