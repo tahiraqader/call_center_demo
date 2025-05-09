@@ -24,7 +24,7 @@ export class CallListComponent implements OnInit {
   pagedCalls: CallRecord[] = []; // items to show on current page
 
 
-  constructor(private callService: RestService, private cdr: ChangeDetectorRef,  private zone: NgZone) { }
+  constructor(private callService: RestService, private cdr: ChangeDetectorRef, private zone: NgZone) { }
 
   ngOnInit() {
     this.fetchCalls();
@@ -55,8 +55,8 @@ export class CallListComponent implements OnInit {
     if (this.editingField) {
       this.callService
         .updateSummary(this.editingCallId, { [this.editingField]: this.editValue })
-        .subscribe((data) => { 
-          console.log("=======date",data)
+        .subscribe((data) => {
+          console.log("=======date", data)
           const index = this.calls.findIndex(item => item._id === this.editingCallId);
           if (index != -1) {
             this.calls[index].summary = data.summary;

@@ -9,7 +9,7 @@ from scipy.io import wavfile
 from . import mongo
 from datetime import date
 from datetime import datetime
-from .types import Call
+from .models import Call
 
 
 create_call = Blueprint('create_call', __name__)

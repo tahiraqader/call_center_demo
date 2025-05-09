@@ -9,12 +9,14 @@ from transformers import pipeline,  AutoTokenizer, AutoModelForSequenceClassific
 import spacy
 import numpy as np
 import time
-from .types import Call
+from .models import Call
+import librosa
+
 
 # Use GPU is possible
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print("Using device:", device)
-# --- Setup model ONCE ---
+# --- Setup models ONCE ---
 model_size = "small"   # Use "tiny" for even faster speeds
 model = WhisperModel(model_size, device=device, compute_type="int8" if device == "cpu" else "float16") # used to transcribe
 
@@ -49,11 +51,25 @@ def transcribe_channel(audio_array, sample_rate):
     """
     Transcribe a single mono audio.
     """
-    buffer = BytesIO()
-    sf.write(buffer, audio_array, sample_rate, format="WAV")
-    buffer.seek(0)
+    # buffer = BytesIO()
+    # sf.write(buffer, audio_array, sample_rate, format="WAV")
+    # buffer.seek(0)
     
-    segments, _ = model.transcribe(buffer)
+    # segments, _ = model.transcribe(buffer)
+
+    # # Convert stereo to mono if needed
+    # if audio_array.ndim == 2:
+    #     audio_array = audio_array.mean(axis=1)
+
+    # Ensure float32 and scale to [-1.0, 1.0] if originally int
+    if not np.issubdtype(audio_array.dtype, np.floating):
+        audio_array = audio_array.astype(np.float32) / np.iinfo(np.int16).max  # or .max from original dtype
+
+    # Resample to 16 kHz if needed
+    if sample_rate != 16000:
+        audio_array = librosa.resample(audio_array, orig_sr=sample_rate, target_sr=16000)
+
+    segments, _ = model.transcribe(audio_array)
     results = []
     for seg in segments:
         results.append((seg.start, seg.end, seg.text))

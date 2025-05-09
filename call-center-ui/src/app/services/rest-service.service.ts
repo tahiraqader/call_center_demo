@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { CallRecord } from '../data/callRecord';
 import { environment } from 'src/environments/environment';
-import { tap, map, switchMap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 
 
 @Injectable({
@@ -15,18 +15,18 @@ export class RestService {
 
   dataAdded$ = this.dataAdded.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Add a new call
   uploadFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.apiUrl}/create`, formData).pipe(
-      tap((data)=>this.dataAdded.next(data)) // Notify listeners other then the caller
+      tap((data) => this.dataAdded.next(data)) // Notify listeners other then the caller
     );
   }
 
- 
+
   // GET: Fetch all calls
   getCalls(): Observable<any[]> {
     return this.http.get<CallRecord[]>(`${this.apiUrl}/calls`);
